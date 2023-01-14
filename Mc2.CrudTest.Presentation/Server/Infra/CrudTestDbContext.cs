@@ -9,6 +9,10 @@ namespace Mc2.CrudTest.Presentation.Server.Infra
 {
     public class CrudTestDbContext : DbContext
     {
+        public CrudTestDbContext()
+        {
+
+        }
 
         public CrudTestDbContext(DbContextOptions<CrudTestDbContext> options)
            : base(options)
