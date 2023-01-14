@@ -31,6 +31,8 @@ namespace Mc2.CrudTest.Presentation.Server.Infra
                 entity.Property(c => c.Email).HasMaxLength(25);
                 entity.Property(c => c.FirstName).HasMaxLength(25);
                 entity.Property(c => c.LastName).HasMaxLength(25);
+                entity.Property(x => x.NationalNumber).HasMaxLength(10).IsUnicode(false);
+                entity.Property(x => x.CountryCode).HasMaxLength(2);
 
             });
             base.OnModelCreating(modelBuilder);
