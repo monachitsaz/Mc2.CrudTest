@@ -24,11 +24,11 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Business.Services
 
         }
 
-        public List<Customer> GetCustomerList()
+        public async Task<List<Customer>> GetCustomerList()
         {
             try
             {
-                return _dbContext.Customers.ToList();
+                return await Task.FromResult(_dbContext.Customers.ToList());
             }
             catch (Exception)
             {
@@ -91,11 +91,17 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Business.Services
 
         }
 
-        public void UpdateCustomer(Customer user)
+        public void UpdateCustomer(Customer customer)
         {
             try
             {
-                _dbContext.Entry(user).State = EntityState.Modified;
+                bool isValid = Regex.IsMatch(customer.BankAccountNumber, "((\\d{4})-){3}\\d{4}");
+
+                var phoneNumberUtil = PhoneNumbers.PhoneNumberUtil.GetInstance();
+                var phone = phoneNumberUtil.Parse(customer.PhoneNumber, null);
+                customer.CountryCode = phone.CountryCode;
+                customer.NationalNumber = phone.NationalNumber;
+                _dbContext.Entry(customer).State = EntityState.Modified;
                 _dbContext.SaveChanges();
             }
             catch (Exception)

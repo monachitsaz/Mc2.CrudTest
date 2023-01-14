@@ -1,10 +1,7 @@
 ﻿using Mc2.CrudTest.Presentation.Server.Application.Services;
 using Mc2.CrudTest.Shared.Domain;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace Mc2.CrudTest.Presentation.Server.Application.Controllers
 {
@@ -19,10 +16,9 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public IActionResult GetAll()
         {
-            var result = await Task.FromResult(_service.GetCustomerList());
-            //var result = _service.GetCustomerList();
+            var result = _service.GetCustomerList();
             return Ok(result);
         }
 
@@ -38,7 +34,6 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Controllers
         }
 
 
-
         [HttpPost]
         public IActionResult Create(Customer customer)
         {
@@ -52,7 +47,6 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Controllers
             {
                 return BadRequest();
             }
-
         }
 
         [HttpPut]
@@ -64,17 +58,9 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
-        {
-            var existingItem = _service.GetCustomerData(id);
-            if (existingItem == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                _service.DeleteCustomer(id);
-                return Ok();
-            }
+        {       
+            _service.DeleteCustomer(id);
+            return Ok();          
 
         }
 

@@ -12,7 +12,7 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Services
 
         void UpdateCustomer(Customer customer);
 
-        List<Customer> GetCustomerList();
+        Task<List<Customer>> GetCustomerList();
 
         Customer GetCustomerData(int id);
 

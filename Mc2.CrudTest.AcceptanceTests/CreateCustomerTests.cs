@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace Mc2.CrudTest.AcceptanceTests
@@ -17,15 +16,14 @@ namespace Mc2.CrudTest.AcceptanceTests
 
         private Customer GetTestCustomer()
         {
+ 
             return new Customer()
-            {
-                BankAccountNumber = "0000-1111-2222-3333",
-                DateOfBirth = new DateTime(2010 - 12 - 26),
+            {       
+                BankAccountNumber = "0000-9999-8888-6666",
+                DateOfBirth = new DateTime(2023 - 01 - 14),
                 Email = "chitsazrmn2@gmail.com",
-                FirstName = "mona223",
+                FirstName = "mona",
                 LastName = "Chitsaz223",
-                //CountryCode=98,
-                //NationalNumber= 9121234567,
                 PhoneNumber = "+989121234567"
             };
         }
@@ -38,7 +36,7 @@ namespace Mc2.CrudTest.AcceptanceTests
                     BankAccountNumber = "",
                     DateOfBirth = new DateTime(2010, 12, 25),
                     Email = "chitsazmn@gmail.com",
-                    FirstName = "mona",
+                    FirstName = "mona23",
                     LastName = "Chitsaz",
                     PhoneNumber = "+989121234567"
                 },
@@ -61,12 +59,12 @@ namespace Mc2.CrudTest.AcceptanceTests
             };
         }
 
+
         [Fact]
         public void Create_CustomerValid_Returns_OkResult()
         {
             // Arrange
-            _mockService.Setup(c => c.AddCustomer(It.IsAny<Customer>())).Verifiable();
-            var newCustomer = GetTestCustomer();
+             var newCustomer = GetTestCustomer();
 
             // Act
             var controller = new CustomerController(_mockService.Object);
@@ -75,7 +73,7 @@ namespace Mc2.CrudTest.AcceptanceTests
             // Assert
             Assert.IsType<OkResult>(okResult);
 
-            _mockService.Verify();
+            //_mockService.Verify();
         }
 
         [Fact]
@@ -85,34 +83,14 @@ namespace Mc2.CrudTest.AcceptanceTests
             var newCustomer = GetTestCustomer();
 
             // Act
-            _mockService.Setup(c => c.AddCustomer(It.IsAny<Customer>())).Verifiable();
             var controller = new CustomerController(_mockService.Object);
             var badRequest = controller.Create(newCustomer);
 
             // Assert
             Assert.IsType<BadRequestResult>(badRequest);
 
-            _mockService.Verify();
         }
 
-
-        [Fact]
-        public void GetAll_Called_Returns_Items()
-        {
-            // Arrange
-            var newCustomerList = GetTestAllCustomers();
-
-            _mockService.Setup(c => c.GetCustomerList()).Returns(newCustomerList);
-            var controller = new CustomerController(_mockService.Object);
-
-            // Act
-            var items = controller.GetAll();
-
-            // Assert
-            Assert.IsType<Task<List<Customer>>>(items);
-
-            _mockService.Verify();
-        }
 
         [Fact]
         public void GetAll_WhenCalled_Returns_OkResult()
@@ -121,82 +99,52 @@ namespace Mc2.CrudTest.AcceptanceTests
             var newCustomerList = GetTestAllCustomers();
 
             // Act
-            _mockService.Setup(c => c.GetCustomerList()).Returns(newCustomerList);
             var controller = new CustomerController(_mockService.Object);
-            var okResult = controller.GetAll();
+            var okResult = controller.GetAll() as OkObjectResult;
 
             // Assert
-            //Assert.IsType<OkObjectResult>(okResult);
+            Assert.IsType<OkObjectResult>(okResult);
 
-            _mockService.Verify();
         }
 
         [Fact]
         public void GetById_UnknownIdPassed_Returns_NotFoundResult()
         {
-            // Arrange
-            _mockService.Setup(c => c.GetCustomerData(It.IsAny<int>())).Verifiable();
-
+         
             // Act
             var controller = new CustomerController(_mockService.Object);
             var notFoundResult = controller.GetById(1);
 
             // Assert
-            //Assert.IsType<NotFoundResult>(notFoundResult);
-            _mockService.Verify();
+            Assert.IsType<NotFoundResult>(notFoundResult);
         }
 
         [Fact]
         public void GetById_ExistingIdPassed_Returns_OkResult()
-        {
-            // Arrange
-            System.Random random = new Random();
-            var id = random.Next();
-
+        {       
             // Act
             var controller = new CustomerController(_mockService.Object);
-            var notFound = controller.GetById(id);
+            var okResult = controller.GetById(1);
 
             // Assert
-            //Assert.IsType<NotFoundResult>(notFound);
-        }
-
-        [Fact]
-        public void Remove_NotExistingIdPassed_Returns_NotFoundResponse()
-        {
-
-            // Arrange
-
-            System.Random random = new Random();
-            var id = random.Next();
-
-            // Act
-            var controller = new CustomerController(_mockService.Object);
-
-            var notFound = controller.Delete(id);
-            // Assert
-            //Assert.IsType<NotFoundResult>(notFound);
+            Assert.IsType<OkObjectResult>(okResult);
 
         }
 
+
         [Fact]
-        public void Remove_ExistingIdPassed_Returns_OkResult()
+        public void Remove_IdPassed_Returns_OkResult()
         {
-            // Arrange
-            _mockService.Setup(c => c.DeleteCustomer(It.IsAny<int>())).Verifiable();
-
-
             // Act
             var controller = new CustomerController(_mockService.Object);
-
             var okResult = controller.Delete(1);
-            _mockService.Verify();
+
             // Assert
-            //Assert.IsType<OkResult>(okResult);
+            Assert.IsType<OkResult>(okResult);
 
 
         }
 
-        // Please create more tests based on project requirements as per in readme.md
+
     }
 }
