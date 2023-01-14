@@ -8,14 +8,14 @@ namespace Mc2.CrudTest.Presentation.Server.Application.Services
 {
     public interface ICustomerService
     {
-        public bool AddCustomer(Customer customer);
+        bool AddCustomer(Customer customer);
 
-        public void UpdateCustomer(Customer customer);
+        void UpdateCustomer(Customer customer);
 
-        public List<Customer> GetCustomerList();
+        List<Customer> GetCustomerList();
 
-        public Customer GetCustomerData(int id);
+        Customer GetCustomerData(int id);
 
-        public void DeleteCustomer(int id);
+        void DeleteCustomer(int id);
     }
 }
